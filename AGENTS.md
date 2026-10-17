@@ -1,5 +1,13 @@
 # AGENTS.md
 
+## IMP-Jp-Trans: hai-jp-report
+
+This project adds [`hai-jp-report`](skills/hai-jp-report/SKILL.md), Hai's explicit-invocation skill for VI/EN → JA translation and Japanese refinement of IMP/EE reports. Its fidelity rules govern the bundled natural-japanese style guidance. Do not invent IMP/EE definitions, rating scales, facts, or decisions.
+
+Keep `skills/natural-japanese/` and the root `LICENSE` intact as the pinned upstream source. Edit the wrapper and its references instead. `dev/sync_hai_jp_vendor.py --check` verifies the self-contained vendor bundle offline; regeneration is explicit and requires the pinned commit. Use `PYTHONDONTWRITEBYTECODE=1` when running Python helpers in this repository so generated caches do not enter the vendor tree.
+
+The upstream contribution notes below apply to the original natural-japanese component.
+
 このリポジトリは [`natural-japanese`](./skills/natural-japanese/SKILL.md) という Agent Skill を配布するためのものです。
 スキル本体は `skills/natural-japanese/` にあり、`SKILL.md` と `references/`・`scripts/`・`assets/` で構成されます。
 

@@ -1,107 +1,72 @@
-# natural-japanese
+# IMP-Jp-Trans
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/coji/natural-japanese)](https://github.com/coji/natural-japanese/releases)
+**Bộ skill của Hải để hoàn thiện bản tiếng Nhật cho báo cáo IMP/EE.**
 
-AI に書かせた仕事の日本語を、読みやすく直す [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) です。議事録、レポート、技術記事、PR の説明文などを、新しく書くときにも使えます。
+Gọi `$hai-jp-report` cùng báo cáo tiếng Việt, tiếng Anh hoặc bản Nhật cần sửa. Skill dịch và biên tập tiếng Nhật, sau đó đối chiếu lại với nguồn để giữ đúng kết luận, bằng chứng, điều kiện, số liệu và trích dẫn.
 
-> **English summary:** An Agent Skill that makes AI-written Japanese work documents read naturally. It never adds facts, opinions, or certainty that the original did not have.
+## Cài bản v1 cho Codex
 
-## 直すとこうなる
+```bash
+npx skills add https://github.com/hailuongrp/IMP-Jp-Trans/tree/hai-jp-report-v1/skills/hai-jp-report --agent codex --global
+```
 
-### 何のことか分からない言い回しを、ふだんの言葉に
+Lệnh cài dùng [Skills CLI](https://github.com/vercel-labs/skills). Mở lại phiên làm việc nếu công cụ chưa làm mới danh sách skill. Đây là cài cho Codex; việc chỉ lưu repo trên GitHub không tự cài vào mọi tài khoản ChatGPT.
 
-| 元の文 | 直した文 |
+Gói đã chứa phần cần thiết của `natural-japanese`; không cần cài thêm skill đó. Hướng dẫn dùng được cả khi không có shell. Các công cụ lint tùy chọn dùng Python 3.10+ và [uv](https://docs.astral.sh/uv/); lần đầu chạy, uv có thể tải các thư viện được khai báo trong script.
+
+## Cách gọi
+
+```text
+$hai-jp-report
+Dịch toàn bộ báo cáo này sang JP.
+```
+
+```text
+$hai-jp-report
+Sửa bản JP này cho tự nhiên, đối chiếu với bản VI đính kèm.
+Giữ nguyên kết luận, điều kiện và citation.
+```
+
+```text
+$hai-jp-report review
+Chỉ kiểm tra bản JP với bản gốc, chỉ ra lỗi và đề xuất sửa.
+```
+
+Nếu chỉ có bản Nhật, skill vẫn biên tập được và nói rõ rằng chưa đối chiếu bản gốc. Mặc định là văn phong báo cáo trung tính `である`; glossary, mẫu JP đã duyệt và yêu cầu cụ thể của người dùng được ưu tiên. Skill không tự đoán IMP/EE viết tắt của gì hoặc tự định nghĩa lại thang đánh giá.
+
+Báo cáo đầu ra không được tự thêm tên tác giả/công cụ, logo, watermark, dòng “dịch bằng…” hoặc ghi chú kỹ thuật. Phần kiểm tra bao gồm nội dung, footer, comment, ghi chú slide và metadata khi có thể truy cập. Tên tác giả nguồn dẫn vốn có trong báo cáo vẫn được giữ. Giấy phép của phần mã sao chép chỉ nằm trong gói phần mềm.
+
+## Skill có những gì?
+
+| Thành phần | Vai trò |
 |---|---|
-| ジョブが見たいのは「まだ決着していない行」だけ | ジョブが見たいのは、チェックインも取り消しもされていない行だけ |
-| リマインドの失敗は握りつぶしていません。 | リマインドの Slack 送信が1件でも失敗すると、同じ回の取り消しが実行されません。 |
+| [SKILL.md](skills/hai-jp-report/SKILL.md) | Một lệnh gọi, quy trình dịch → biên tập → kiểm nghĩa. |
+| [Quy tắc bảo toàn nội dung](skills/hai-jp-report/references/fidelity.md) | Giữ đúng mức chắc chắn, phạm vi, tác nhân, điều kiện, số liệu và nguồn. |
+| [Văn phong JP](skills/hai-jp-report/references/jp-style.md) | Tiếng Nhật báo cáo rõ và tự nhiên, tránh câu dịch sát chữ. |
+| [Thuật ngữ](skills/hai-jp-report/references/terminology.md) | Các phân biệt dễ dịch nhầm và [mẫu glossary](skills/hai-jp-report/assets/glossary-template.tsv). Chưa phải glossary RP đã duyệt. |
+| [Checklist QA](skills/hai-jp-report/references/qa.md) | Đối chiếu nguồn với JP cuối; tách lỗi nghĩa khỏi gợi ý văn phong. |
+| [natural-japanese đóng gói](skills/hai-jp-report/vendor/natural-japanese) | Hướng dẫn biên tập và các script lint từ phiên bản cố định, kèm license và nguồn gốc. |
 
-AI が書いた技術記事と PR の説明文を「読みやすくして」と直させた実際の出力から、うまく直った例を選んでいます。2行目の元の文は、失敗をきちんと扱っているように読めます。その文書の本文に書いてあったのは、1件の失敗で取り消しまで止まるという不具合でした。
+Ví dụ cần giữ nguyên: **“Chưa đủ bằng chứng để đầu tư”** không được dịch thành **“Không nên đầu tư”**. **“Chỉ khi cả A và B”** không được đổi thành **“A hoặc B”**. **“Công ty tự báo cáo”** không được đổi thành **“Đã xác minh”**.
 
-### 元にないことは足さない。確信の度合いも変えない
+## Nguồn gốc và giấy phép
 
-調査レポートを、同じメモから Claude Opus 5.5 に書かせた例です。メモには、解約が増えた理由について未検証の見立てが2つ書いてありました。
+Phần workflow IMP/EE, quy tắc đối chiếu, hướng dẫn thuật ngữ và cấu hình `hai-jp-report` được xây dựng riêng cho dự án này. Phần biên tập tiếng Nhật sử dụng [natural-japanese của coji](https://github.com/coji/natural-japanese), theo giấy phép MIT.
 
-| | 書いた文 |
-|---|---|
-| スキルなし | 3月に始めたライトの初月無料キャンペーンとの関係が強く疑われますが、まだ確かめられていません。 |
-| スキルあり | チームからは、次の二つの見立てが出ている。どちらも未検証である。 |
+Bản upstream được khóa tại commit `03bc944a0c4a9f0b2a66eab065b30de5c529bf08`. Bản quyền và MIT license được giữ nguyên trong [gói vendor](skills/hai-jp-report/vendor/natural-japanese/LICENSE). [UPSTREAM.json](skills/hai-jp-report/vendor/natural-japanese/UPSTREAM.json) ghi nguồn và checksum. File `SKILL.md` upstream được đổi tên thành `GUIDE.md` trong vendor để chỉ có một skill được phát hiện; nội dung sao chép giữ nguyên.
 
-スキルなしは、2つの見立てに触れながらも、結論ではキャンペーンとの関係を「強く疑われます」と書いています。スキルありは、メモのとおり2つを並べ、どちらも未検証と書いています。
+Việc repo hiển thị “forked from” do GitHub quản lý, độc lập với tên skill. Xem [hướng dẫn chính thức về tách fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/detaching-a-fork) trước khi thay đổi quan hệ repo.
 
-### 太字を重ねない
+## Bảo trì và kiểm tra
 
-5種類の文書について、種類ごとに同じ素材を5つのモデルに渡して書かせました。太字は、スキルなしの25本で551か所、スキルありの25本で13か所でした。
-
-## 使い方
-
-```bash
-npx skills add coji/natural-japanese
-```
-
-あとは、エージェントに「読みやすくして」「議事録にして」「AI っぽいところを直して」のように頼むだけです。書き換えずに自然さの点数(0〜100)と理由だけを知りたいときは、`/natural-japanese score <ファイル>` を使います。
-
-版ごとの変更点は [Releases](https://github.com/coji/natural-japanese/releases) にあります。
-
-<details>
-<summary>ほかの入れ方(Cursor・ChatGPT・Codex、Claude Code プラグイン、手動)</summary>
-
-Cursor・ChatGPT・Codex など(`AGENTS.md` を経由して使う):
+Giữ cây `skills/natural-japanese/` nguyên trạng theo pin. Không cập nhật vendor tự động lúc dịch báo cáo.
 
 ```bash
-npx openskills install coji/natural-japanese
-npx openskills sync
+python3 dev/sync_hai_jp_vendor.py --check
 ```
 
-Claude Code プラグイン:
+Lệnh kiểm tra chạy offline và cần Git object của commit đã khóa; bản clone quá nông có thể cần lấy thêm lịch sử trước. Người dùng cài riêng skill không cần chạy công cụ bảo trì này.
 
-```
-/plugin marketplace add coji/natural-japanese
-/plugin install natural-japanese@natural-japanese
-```
+Các ca thử tổng hợp và tiêu chí đối chiếu nằm tại [evals/hai-jp-report](evals/hai-jp-report). Kết quả thử không thay thế đánh giá trên báo cáo thực tế và không chứng minh skill chính xác tuyệt đối hoặc luôn tốt hơn GPT thông thường.
 
-手動で入れる場合は、[Releases](https://github.com/coji/natural-japanese/releases) から `natural-japanese.skill` をダウンロードし、エージェントのスキルディレクトリに展開してください。
-
-</details>
-
-## 直すときに守ること
-
-元の文書にない事実・数値・意見・方針は足しません。確信の度合いも変えません。「次回また相談する」を「合意した」にすると、書き手が言っていないことを書き手の言葉として伝えてしまうからです。直したあとは元の文書と並べて、足した内容がないかを確かめます。
-
-## 苦手なこと
-
-- 英語の言い方を1語ずつ訳した熟語や、動作を名詞にまとめた言い回しは、半分ほど見逃します。書いたモデルにも直すモデルにも、自然に見えるためです
-- effort(モデルが推論にかける量の設定)を下げると、手順の一部を省いて見逃しが増えます。選べる環境では high を使ってください
-
-## 仕組み
-
-疑わしい箇所は [`lint.py`](./skills/natural-japanese/scripts/lint.py) が形態素解析([sudachipy](https://github.com/WorksApplications/sudachi.rs))で検出し、直すかどうかはエージェントが文脈を見て決めます。AI は自分の書き癖に気づきにくいので、検出を機械に任せています。規則と手順はすべて [`SKILL.md`](./skills/natural-japanese/SKILL.md) にあります。
-
-<details>
-<summary>検査スクリプトを単体で使う</summary>
-
-[uv](https://docs.astral.sh/uv/) があれば、スキルを通さずに実行できます。
-
-```bash
-uv run skills/natural-japanese/scripts/lint.py draft.md                  # 疑わしい表現と直し方
-uv run skills/natural-japanese/scripts/lint.py draft.md --genre tech     # 技術文書向けの基準で
-uv run skills/natural-japanese/scripts/lint.py draft.md --reading-load   # 長すぎる文、続きすぎる漢字など
-uv run skills/natural-japanese/scripts/outline.py draft.md               # 見出しと各段落の先頭文
-uv run skills/natural-japanese/scripts/terms.py draft.md                 # 専門用語の初出と説明の有無
-uv run skills/natural-japanese/scripts/paragraphs.py draft.md            # 段落ごとの確認用の一覧
-uv run skills/natural-japanese/scripts/newfacts.py original.md revised.md  # 直した文書にだけある数値・固有名詞
-```
-
-スクリプトを変えたときは、`./dev/check-fixtures.sh` で回帰テストを実行してください(`git config core.hooksPath .githooks` を設定すると、コミット時にも実行されます)。
-
-</details>
-
-## 参考にした資料
-
-- [AI臭さを消した日本語執筆エージェントの設計(なつ「いとおり」)](https://note.com/art_reflection/n/n7ffd5ce3320c):機械による検出と文脈による判断を分ける考え方
-- [日本語技術文書の文章規範(k16shikano)](https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d):LLM に特有の空虚な言い回しの分類
-- [meiseki(bamboo-nova)](https://github.com/bamboo-nova/meiseki):機械検出と LLM による推敲の組み合わせ方
-
-## ライセンス
-
-MIT ライセンスです。詳しくは [LICENSE](./LICENSE) を見てください。
+Các thay đổi mới của dự án nguồn vẫn có thể được lấy bằng Git kể cả khi repo đã tách quan hệ fork. Việc nâng bản cần xem diff, cập nhật cây nguồn và pin, tái tạo vendor bằng `--sync --commit`, rồi chạy lại các ca thử trước khi cập nhật skill đã cài. Bản fork và bản skill cài trên máy là hai bản riêng; đồng bộ repo không tự thay đổi gói đang dùng.

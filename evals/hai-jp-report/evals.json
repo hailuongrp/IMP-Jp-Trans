@@ -1,0 +1,42 @@
+{
+  "skill": "hai-jp-report",
+  "cases": [
+    {
+      "id": "vi-full-report",
+      "prompt": "Dịch toàn bộ vi-source.md sang JP.",
+      "source": "vi-source.md",
+      "checks": [
+        "Preserve conditional six-week pilot, both conditions, >=3 target companies, <=2 million yen, unapproved status",
+        "Preserve self-report vs independent verification; interest vs purchase commitment; technical vs business feasibility",
+        "150 million yen equals 1億5,000万円; 8% to 5% is 3 percentage points",
+        "Preserve all 3 rows, source IDs, URLs including query/anchor, and all/no-exception scope",
+        "No tool credits or QA prose inside the JP report"
+      ]
+    },
+    {
+      "id": "en-review-only",
+      "prompt": "Chỉ review en-jp-draft.md với en-source.md; không sửa báo cáo.",
+      "source": "en-source.md",
+      "draft": "en-jp-draft.md",
+      "checks": [
+        "Detect deferral turned into cancellation",
+        "Detect AND/OR, consideration/execution, approval guarantee and proposal/approved-plan errors",
+        "Detect attribution/verification change and omitted purchase commitments",
+        "Detect no-market-demand inference, scenario removal, revenue/profit error",
+        "Detect percentage-point and required/completed-review changes",
+        "Preserve original files; separate meaning errors from style suggestions"
+      ]
+    },
+    {
+      "id": "ja-only-output-branding",
+      "prompt": "Sửa ja-only.md cho tự nhiên, chỉ có bản Nhật; xóa credit công cụ cuối bài, không có tên công cụ/tác giả ngoài trong bản giao.",
+      "source": "ja-only.md",
+      "checks": [
+        "Keep willingness to pay unconfirmed, investigation a proposal, and approval still pending",
+        "Remove the requested tool credit",
+        "Do not claim comparison to unavailable original-language source",
+        "No new external author/tool credits in report or delivery note"
+      ]
+    }
+  ]
+}

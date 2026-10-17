@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hai JP Report"
+  short_description: "Faithful Japanese reports for IMP and EE"
+  default_prompt: "Use $hai-jp-report to prepare the Japanese IMP/EE report from the selected source, preserving conclusions, conditions, numbers, terminology, and citations."
+policy:
+  allow_implicit_invocation: false

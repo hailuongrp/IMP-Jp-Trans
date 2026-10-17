@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "repository": "https://github.com/coji/natural-japanese",
+    "commit": "03bc944a0c4a9f0b2a66eab065b30de5c529bf08",
+    "skill_path": "skills/natural-japanese"
+  },
+  "bundle_path": "skills/hai-jp-report/vendor/natural-japanese",
+  "transformation": "SKILL.md renamed to GUIDE.md; all copied file bytes unchanged.",
+  "files": {
+    "GUIDE.md": {
+      "upstream_path": "skills/natural-japanese/SKILL.md",
+      "sha256": "3f51689eba0894845551fdf9d12b605bc32dc8ff54fb14c193574932f4398d6a",
+      "mode": "100644"
+    },
+    "LICENSE": {
+      "upstream_path": "LICENSE",
+      "sha256": "fb3dd814f7b2807de2a812446c61643cf235e731bbf8cf908c0a5962d8917121",
+      "mode": "100644"
+    },
+    "assets/style-profile-template.md": {
+      "upstream_path": "skills/natural-japanese/assets/style-profile-template.md",
+      "sha256": "d43a199e1399c73a41f332c45c5cf2321457fd49391b0a5bec23e52ef6fb5541",
+      "mode": "100644"
+    },
+    "references/diagnose.md": {
+      "upstream_path": "skills/natural-japanese/references/diagnose.md",
+      "sha256": "48bd4700e6b103dd2731a73fae5e5ff32e112497da3618b8210db99bc1999664",
+      "mode": "100644"
+    },
+    "references/doctypes/guide.md": {
+      "upstream_path": "skills/natural-japanese/references/doctypes/guide.md",
+      "sha256": "75ca3e5e146b10df0b2a80f81462b324831b7bbd4686b98b03cc70a8863b8ec0",
+      "mode": "100644"
+    },
+    "references/doctypes/memo.md": {
+      "upstream_path": "skills/natural-japanese/references/doctypes/memo.md",
+      "sha256": "f49353f909a9a7bd7adc184e30d9cfc82b2538cd4b3e3092026e688bdfa5e282",
+      "mode": "100644"
+    },
+    "references/doctypes/minutes.md": {
+      "upstream_path": "skills/natural-japanese/references/doctypes/minutes.md",
+      "sha256": "61591245d72afa9c0fe0eeefc6422255fa6110af4555ead1c7aa63bd3dd9e0ba",
+      "mode": "100644"
+    },
+    "references/doctypes/report.md": {
+      "upstream_path": "skills/natural-japanese/references/doctypes/report.md",
+      "sha256": "1569b345f62e38d67f9defb51d0182c905a0c0fcaeabfa8bc8b1dc13e720edcc",
+      "mode": "100644"
+    },
+    "references/doctypes/slide.md": {
+      "upstream_path": "skills/natural-japanese/references/doctypes/slide.md",
+      "sha256": "44c9b8e16ead7d1f6b9f0baa115c48999905233415bdd8c802f1af9a1a49e4ce",
+      "mode": "100644"
+    },
+    "references/manual-checklist.md": {
+      "upstream_path": "skills/natural-japanese/references/manual-checklist.md",
+      "sha256": "ac31e8fcfdfeb79b8339cc38022a88e2a80653a2faea19e2925335919b53b2cb",
+      "mode": "100644"
+    },
+    "scripts/calibrate.py": {
+      "upstream_path": "skills/natural-japanese/scripts/calibrate.py",
+      "sha256": "7409007f511524fafe7eaf026f8d693a0829d0bc0845b9e35092ea61deb411d8",
+      "mode": "100644"
+    },
+    "scripts/fixtures/ai-smelly.md": {
+      "upstream_path": "skills/natural-japanese/scripts/fixtures/ai-smelly.md",
+      "sha256": "c84979246c11005139ba35afe4e6c5f0a716cf2f8d7e9ac647efffe1b1c5c558",
+      "mode": "100644"
+    },
+    "scripts/fixtures/natural.md": {
+      "upstream_path": "skills/natural-japanese/scripts/fixtures/natural.md",
+      "sha256": "218c4e52cf0e231ba8c9192fc8f23b49de40d0b3463419a6697dea787862572e",
+      "mode": "100644"
+    },
+    "scripts/lint.py": {
+      "upstream_path": "skills/natural-japanese/scripts/lint.py",
+      "sha256": "6cf6c93f51b62a919b983414714091bc7d0e8273bd029518dcc86395326ad4b0",
+      "mode": "100644"
+    },
+    "scripts/newfacts.py": {
+      "upstream_path": "skills/natural-japanese/scripts/newfacts.py",
+      "sha256": "7f7490001a0ccf8b2efab76b95e51c3c3b8f6212d261b3a2c8008946e203e824",
+      "mode": "100644"
+    },
+    "scripts/outline.py": {
+      "upstream_path": "skills/natural-japanese/scripts/outline.py",
+      "sha256": "9b0478364f76c6aeed2befc8f4ee1aa4aa1ec6789eca45fb7b9958ccaed7ca80",
+      "mode": "100644"
+    },
+    "scripts/paragraphs.py": {
+      "upstream_path": "skills/natural-japanese/scripts/paragraphs.py",
+      "sha256": "ca3775be4475b092c9c140455bc17a70520823c97d669e98a64705f777480ffd",
+      "mode": "100644"
+    },
+    "scripts/semantic.py": {
+      "upstream_path": "skills/natural-japanese/scripts/semantic.py",
+      "sha256": "c14909618677ee66c6f67a0cc81bc9ced9951f2ffd9727182e5e0de6b2d1d667",
+      "mode": "100644"
+    },
+    "scripts/terms.py": {
+      "upstream_path": "skills/natural-japanese/scripts/terms.py",
+      "sha256": "f41da63929642540a2e44ba3ef9e04476cc0a693c57a8d99f117b4b086b03439",
+      "mode": "100644"
+    },
+    "scripts/textcore.py": {
+      "upstream_path": "skills/natural-japanese/scripts/textcore.py",
+      "sha256": "b09d7147d84f48fe6a9a534f8ec0198161a4944720cc25f68f15971a6bab41a0",
+      "mode": "100644"
+    }
+  }
+}
