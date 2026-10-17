@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hai JP Report"
+  short_description: "Translate and review IMP/EE Japanese reports"
+  default_prompt: "Use $hai-jp-report to prepare or review this IMP/EE report in Japanese, preserving its conclusions, conditions, uncertainty, numbers and citations."
+policy:
+  allow_implicit_invocation: false

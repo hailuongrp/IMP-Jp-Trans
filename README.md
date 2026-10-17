@@ -1,107 +1,47 @@
-# natural-japanese
+# IMP-Jp-Trans
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/coji/natural-japanese)](https://github.com/coji/natural-japanese/releases)
+Skill riêng cho báo cáo tiếng Nhật của IMP/EE: **`hai-jp-report`**.
 
-AI に書かせた仕事の日本語を、読みやすく直す [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) です。議事録、レポート、技術記事、PR の説明文などを、新しく書くときにも使えます。
+Mục tiêu: dịch Việt/Anh → Nhật, biên tập bản Nhật và kiểm tra lại với bản nguồn; giữ nguyên kết luận, điều kiện, mức độ chắc chắn, số liệu và nguồn trích dẫn.
 
-> **English summary:** An Agent Skill that makes AI-written Japanese work documents read naturally. It never adds facts, opinions, or certainty that the original did not have.
+## Skill
 
-## 直すとこうなる
+Mã nguồn nằm tại [`skills/hai-jp-report/`](./skills/hai-jp-report/). Điểm vào là [`SKILL.md`](./skills/hai-jp-report/SKILL.md).
 
-### 何のことか分からない言い回しを、ふだんの言葉に
+Sau khi được cài và nhận diện trong môi trường Codex phù hợp, cách gọi dự kiến là:
 
-| 元の文 | 直した文 |
-|---|---|
-| ジョブが見たいのは「まだ決着していない行」だけ | ジョブが見たいのは、チェックインも取り消しもされていない行だけ |
-| リマインドの失敗は握りつぶしていません。 | リマインドの Slack 送信が1件でも失敗すると、同じ回の取り消しが実行されません。 |
+```text
+$hai-jp-report <báo cáo nguồn>
+$hai-jp-report polish <bản Nhật> <bản nguồn nếu có>
+$hai-jp-report review <bản nguồn> <bản Nhật>
+```
 
-AI が書いた技術記事と PR の説明文を「読みやすくして」と直させた実際の出力から、うまく直った例を選んでいます。2行目の元の文は、失敗をきちんと扱っているように読めます。その文書の本文に書いてあったのは、1件の失敗で取り消しまで止まるという不具合でした。
+Repo này lưu gói skill; việc ghi lên GitHub không cài hay kích hoạt skill trên máy người dùng. Chưa thực hiện cài đặt hoặc kiểm thử gọi skill trong máy của chủ repo. Cấu hình `agents/openai.yaml` đặt chế độ gọi tường minh, không tự kích hoạt theo nội dung chat.
 
-### 元にないことは足さない。確信の度合いも変えない
+## Cách hoạt động
 
-調査レポートを、同じメモから Claude Opus 5.5 に書かせた例です。メモには、解約が増えた理由について未検証の見立てが2つ書いてありました。
+1. Đọc đầy đủ và khóa nội dung bản nguồn.
+2. Dịch trực tiếp sang Nhật; giữ ý nghĩa và cấu trúc đã chốt.
+3. Biên tập bằng bộ `natural-japanese` đóng gói theo commit cố định.
+4. Kiểm tra số liệu, link, mã nguồn trích dẫn và credit phát sinh; đối chiếu lại nghĩa với bản gốc. Dùng reviewer riêng khi môi trường hỗ trợ, không giả lập việc review độc lập.
+5. Xuất báo cáo sạch; ghi rõ phần chưa kiểm hoặc lỗi còn tồn tại bên ngoài nội dung báo cáo.
 
-| | 書いた文 |
-|---|---|
-| スキルなし | 3月に始めたライトの初月無料キャンペーンとの関係が強く疑われますが、まだ確かめられていません。 |
-| スキルあり | チームからは、次の二つの見立てが出ている。どちらも未検証である。 |
+Không thêm watermark, tên tác giả công cụ hoặc dòng `powered by` vào báo cáo chỉ vì đã dùng skill. Các nguồn nghiên cứu thực sự có trong báo cáo vẫn giữ nguyên. LICENSE và ghi nhận bộ gốc nằm trong mã nguồn.
 
-スキルなしは、2つの見立てに触れながらも、結論ではキャンペーンとの関係を「強く疑われます」と書いています。スキルありは、メモのとおり2つを並べ、どちらも未検証と書いています。
-
-### 太字を重ねない
-
-5種類の文書について、種類ごとに同じ素材を5つのモデルに渡して書かせました。太字は、スキルなしの25本で551か所、スキルありの25本で13か所でした。
-
-## 使い方
+## Kiểm thử
 
 ```bash
-npx skills add coji/natural-japanese
+python3 -m unittest discover -s skills/hai-jp-report/tests -v
 ```
 
-あとは、エージェントに「読みやすくして」「議事録にして」「AI っぽいところを直して」のように頼むだけです。書き換えずに自然さの点数(0〜100)と理由だけを知りたいときは、`/natural-japanese score <ファイル>` を使います。
+18 unit test của bộ kiểm tra văn bản đã chạy đạt trong môi trường build tách biệt. Đây không phải bằng chứng bản dịch tốt hơn GPT thường. Chưa chạy đánh giá mù chất lượng Việt/Anh → Nhật trên báo cáo IMP/EE thật hoặc kiểm thử cài đặt trên máy người dùng. Xem [`tests/README.md`](./skills/hai-jp-report/tests/README.md).
 
-版ごとの変更点は [Releases](https://github.com/coji/natural-japanese/releases) にあります。
+## Bộ nền và cập nhật
 
-<details>
-<summary>ほかの入れ方(Cursor・ChatGPT・Codex、Claude Code プラグイン、手動)</summary>
+Bộ gốc vẫn được giữ tại [`skills/natural-japanese/`](./skills/natural-japanese/). Skill riêng có bản đóng gói tại `skills/hai-jp-report/vendor/natural-japanese/`, kèm giấy phép để có thể chuyển cả thư mục skill mà không phụ thuộc đường dẫn bên ngoài.
 
-Cursor・ChatGPT・Codex など(`AGENTS.md` を経由して使う):
+Nguồn và phiên bản cố định: [`UPSTREAM.lock.json`](./skills/hai-jp-report/UPSTREAM.lock.json). Không tự cập nhật bộ nền trong khi dịch. Một lần cập nhật cần được review, thay bản đóng gói và chạy lại kiểm thử; cập nhật bộ gốc không tự thay đổi bản đã pin.
 
-```bash
-npx openskills install coji/natural-japanese
-npx openskills sync
-```
+Giấy phép gốc: [MIT](./LICENSE). Chi tiết: [`THIRD_PARTY_NOTICES.md`](./skills/hai-jp-report/THIRD_PARTY_NOTICES.md). Tài liệu bộ gốc trước khi thêm wrapper còn trong [lịch sử repository](https://github.com/hailuongrp/IMP-Jp-Trans/blob/03bc944a0c4a9f0b2a66eab065b30de5c529bf08/README.md).
 
-Claude Code プラグイン:
-
-```
-/plugin marketplace add coji/natural-japanese
-/plugin install natural-japanese@natural-japanese
-```
-
-手動で入れる場合は、[Releases](https://github.com/coji/natural-japanese/releases) から `natural-japanese.skill` をダウンロードし、エージェントのスキルディレクトリに展開してください。
-
-</details>
-
-## 直すときに守ること
-
-元の文書にない事実・数値・意見・方針は足しません。確信の度合いも変えません。「次回また相談する」を「合意した」にすると、書き手が言っていないことを書き手の言葉として伝えてしまうからです。直したあとは元の文書と並べて、足した内容がないかを確かめます。
-
-## 苦手なこと
-
-- 英語の言い方を1語ずつ訳した熟語や、動作を名詞にまとめた言い回しは、半分ほど見逃します。書いたモデルにも直すモデルにも、自然に見えるためです
-- effort(モデルが推論にかける量の設定)を下げると、手順の一部を省いて見逃しが増えます。選べる環境では high を使ってください
-
-## 仕組み
-
-疑わしい箇所は [`lint.py`](./skills/natural-japanese/scripts/lint.py) が形態素解析([sudachipy](https://github.com/WorksApplications/sudachi.rs))で検出し、直すかどうかはエージェントが文脈を見て決めます。AI は自分の書き癖に気づきにくいので、検出を機械に任せています。規則と手順はすべて [`SKILL.md`](./skills/natural-japanese/SKILL.md) にあります。
-
-<details>
-<summary>検査スクリプトを単体で使う</summary>
-
-[uv](https://docs.astral.sh/uv/) があれば、スキルを通さずに実行できます。
-
-```bash
-uv run skills/natural-japanese/scripts/lint.py draft.md                  # 疑わしい表現と直し方
-uv run skills/natural-japanese/scripts/lint.py draft.md --genre tech     # 技術文書向けの基準で
-uv run skills/natural-japanese/scripts/lint.py draft.md --reading-load   # 長すぎる文、続きすぎる漢字など
-uv run skills/natural-japanese/scripts/outline.py draft.md               # 見出しと各段落の先頭文
-uv run skills/natural-japanese/scripts/terms.py draft.md                 # 専門用語の初出と説明の有無
-uv run skills/natural-japanese/scripts/paragraphs.py draft.md            # 段落ごとの確認用の一覧
-uv run skills/natural-japanese/scripts/newfacts.py original.md revised.md  # 直した文書にだけある数値・固有名詞
-```
-
-スクリプトを変えたときは、`./dev/check-fixtures.sh` で回帰テストを実行してください(`git config core.hooksPath .githooks` を設定すると、コミット時にも実行されます)。
-
-</details>
-
-## 参考にした資料
-
-- [AI臭さを消した日本語執筆エージェントの設計(なつ「いとおり」)](https://note.com/art_reflection/n/n7ffd5ce3320c):機械による検出と文脈による判断を分ける考え方
-- [日本語技術文書の文章規範(k16shikano)](https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d):LLM に特有の空虚な言い回しの分類
-- [meiseki(bamboo-nova)](https://github.com/bamboo-nova/meiseki):機械検出と LLM による推敲の組み合わせ方
-
-## ライセンス
-
-MIT ライセンスです。詳しくは [LICENSE](./LICENSE) を見てください。
+Định dạng skill và cách gọi Codex tham chiếu [tài liệu OpenAI](https://developers.openai.com/codex/skills). Không đưa báo cáo khách hàng, dữ liệu riêng hoặc credential vào repo công khai này khi chưa có yêu cầu rõ ràng.
