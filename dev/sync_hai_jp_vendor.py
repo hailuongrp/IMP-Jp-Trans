@@ -24,6 +24,7 @@ UPSTREAM_URL = "https://github.com/coji/natural-japanese"
 SOURCE_ROOT = "skills/natural-japanese"
 VENDOR_ROOT = "skills/hai-jp-report/vendor/natural-japanese"
 MANIFEST_NAME = "UPSTREAM.json"
+LOCK_PATH = "skills/hai-jp-report/UPSTREAM.lock.json"
 
 
 class ValidationError(Exception):
@@ -123,20 +124,17 @@ def load_pinned_files(root):
         elif source.startswith(SOURCE_ROOT + "/"):
             source_paths.add(source[len(SOURCE_ROOT) + 1:])
             destination = source[len(SOURCE_ROOT) + 1:]
-            if destination == "SKILL.md":
-                destination = "GUIDE.md"
         else:
             raise ValidationError(f"Unexpected upstream path: {source}")
         safe_path(root, VENDOR_ROOT + "/" + destination)
-        if (destination in files or destination == MANIFEST_NAME
-                or PurePosixPath(destination).name == "SKILL.md"):
+        if destination in files or destination == MANIFEST_NAME:
             raise ValidationError(f"Unsafe or colliding bundle entry: {destination}")
         data = git(root, "cat-file", "blob", object_id)
         if not source_path.is_file() or source_path.read_bytes() != data:
             raise ValidationError(f"Working upstream differs from pin: {source}")
         files[destination] = {"data": data, "upstream_path": source, "mode": mode}
 
-    if "GUIDE.md" not in files or "LICENSE" not in files:
+    if "SKILL.md" not in files or "LICENSE" not in files:
         raise ValidationError("Pinned source must contain SKILL.md and root LICENSE")
     actual_source, _ = scan_tree(safe_path(root, SOURCE_ROOT))
     require_same_set("Working upstream file set", actual_source, source_paths)
@@ -152,7 +150,7 @@ def expected_bundle(files):
             "skill_path": SOURCE_ROOT,
         },
         "bundle_path": VENDOR_ROOT,
-        "transformation": "SKILL.md renamed to GUIDE.md; all copied file bytes unchanged.",
+        "transformation": "Original paths and copied file bytes unchanged; repository LICENSE added.",
         "files": {
             name: {"upstream_path": item["upstream_path"],
                    "sha256": digest(item["data"]), "mode": item["mode"]}
@@ -169,6 +167,60 @@ def expected_bundle(files):
 def expected_directories(bundle):
     return {parent.as_posix() for name in bundle
             for parent in PurePosixPath(name).parents if parent != PurePosixPath(".")}
+
+
+def bundle_tree_sha(bundle):
+    """Compute the Git SHA-1 tree without writing objects or using an index."""
+    root = {}
+    for name, (data, mode) in bundle.items():
+        tree = root
+        parts = PurePosixPath(name).parts
+        for part in parts[:-1]:
+            tree = tree.setdefault(part, {})
+        tree[parts[-1]] = (data, mode)
+
+    def object_sha(kind, data):
+        header = f"{kind} {len(data)}\0".encode("ascii")
+        return hashlib.sha1(header + data).digest()
+
+    def visit(tree):
+        entries = []
+        for name, value in tree.items():
+            if isinstance(value, dict):
+                entries.append((name + "/", b"40000", name, visit(value)))
+            else:
+                data, mode = value
+                entries.append((name, f"100{mode:o}".encode("ascii"), name,
+                                object_sha("blob", data)))
+        payload = b"".join(mode + b" " + name.encode("utf-8") + b"\0" + oid
+                           for _, mode, name, oid in sorted(entries))
+        return object_sha("tree", payload)
+
+    return visit(root).hex()
+
+
+def load_lock(root):
+    """Keep the existing main-branch lock as the canonical package contract."""
+    path = safe_path(root, LOCK_PATH)
+    lock = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(lock, dict):
+        raise ValidationError("Lock must contain an object")
+    modifications = lock.get("modifications")
+    if (not isinstance(modifications, list)
+            or not all(isinstance(item, str) for item in modifications)):
+        raise ValidationError("Lock modifications must contain a list of strings")
+    expected = {
+        "schema_version": 1,
+        "source_commit": PINNED_COMMIT,
+        "source_path": SOURCE_ROOT,
+        "source_tree_sha": git(root, "rev-parse", f"{PINNED_COMMIT}:{SOURCE_ROOT}").decode().strip(),
+        "bundled_path": "vendor/natural-japanese",
+        "upstream_license_blob_sha": git(root, "rev-parse", f"{PINNED_COMMIT}:LICENSE").decode().strip(),
+    }
+    for name, value in expected.items():
+        if lock.get(name) != value:
+            raise ValidationError(f"Lock field differs from reviewed pin: {name}")
+    return path, lock
 
 
 def check_bundle(root, bundle):
@@ -234,15 +286,25 @@ def main(argv=None):
     try:
         repo = args.repo_root.resolve(strict=True)
         bundle = expected_bundle(load_pinned_files(repo))
+        lock_path, lock = load_lock(repo)
+        expected_tree = bundle_tree_sha(bundle)
         vendor = safe_path(repo, VENDOR_ROOT)
         if args.sync:
             sync_bundle(vendor, bundle)
+            lock["bundled_tree_sha"] = expected_tree
+            note = "Added a deterministic per-file UPSTREAM.json manifest; copied dependency files remain unchanged."
+            if note not in lock["modifications"]:
+                lock["modifications"].append(note)
+            lock_data = (json.dumps(lock, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            atomic_write(lock_path, lock_data, 0o644)
         else:
             check_bundle(vendor, bundle)
+            if lock.get("bundled_tree_sha") != expected_tree:
+                raise ValidationError("Lock bundled_tree_sha differs from the verified bundle")
         verb = "Synced and verified" if args.sync else "Verified"
         print(f"{verb} {len(bundle) - 1} upstream files + {MANIFEST_NAME} at {PINNED_COMMIT} (offline).")
         return 0
-    except (ValidationError, OSError, subprocess.TimeoutExpired) as error:
+    except (ValidationError, OSError, ValueError, subprocess.TimeoutExpired) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
 

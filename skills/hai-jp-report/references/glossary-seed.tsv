@@ -1,0 +1,12 @@
+source_term	japanese_candidate	status	usage_note
+thẩm định phương án kinh doanh	事業案の評価	PROPOSED	Use context; not automatically legal due diligence or financial audit.
+bằng chứng	根拠	PROPOSED	Use 証拠 only when that narrower meaning is intended.
+giả thuyết	仮説	PROPOSED	Do not convert into an established fact.
+khuyến nghị	提言	PROPOSED	Distinguish advice from an approved decision.
+chưa xác nhận	未確認	PROPOSED	Not proof that the subject does not exist.
+sẵn sàng trả tiền	対価を支払う意向がある	PROPOSED	Not necessarily an actual purchase or binding commitment.
+doanh thu	売上高	PROPOSED	Preserve period and currency.
+lợi nhuận	利益	PROPOSED	Do not substitute sales, cash flow or margin.
+lợi nhuận gộp	売上総利益	PROPOSED	Different from operating profit.
+chi phí tăng thêm	追加費用	PROPOSED	Preserve the comparison baseline.
+lợi thế cạnh tranh	競争優位性	PROPOSED	Do not imply proven superiority when hypothetical.

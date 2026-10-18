@@ -1,59 +1,41 @@
-# Meaning that must survive translation
+# Fidelity review for IMP/EE reports
 
-Apply these rules to prose, headings, executive summaries, tables, charts, captions, and notes. They take precedence over stylistic shortening.
+The original report is the authority. A fluent translation is still wrong if a Japanese reader would make a materially different decision from a source-language reader. Do not treat a polished Japanese draft as the authority for its own review.
 
-## Kind and strength of statement
+## Review dimensions
 
-| Source meaning | Faithful Japanese example | Meaning-changing rewrite |
+| Dimension | Verify against the original |
+|---|---|
+| Decision and scope | Same recommendation; same subject, time horizon, product/service scope and conditions. No new priorities among parallel options. |
+| Certainty and negation | Preserve may/likely/confirmed, not yet/not, absence of evidence/evidence of absence, possibility/commitment and who holds each view. |
+| Actors and causality | Same payer, buyer, beneficiary, provider and decision-maker. Do not invent a subject or causal link. |
+| Numbers | Values, signs, ranges, denominator, units, currency, dates, periods, forecasts versus actuals and comparison baseline. Check arithmetic for notation changes. |
+| Evidence | Every original claim-to-source link, source ID, quotation relationship, table note and material caveat survives. No fabricated or relocated support. |
+| Completeness | All substantive arguments, options, examples, objections, conditions and appendices remain. Similar-looking sentences may carry different qualifications. |
+| Terminology | One term per concept where appropriate; do not collapse related but different concepts to make prose shorter. Use approved names; do not invent formal expansions of internal codes. |
+| Presentation | Headings, summaries, table cells and callouts must not overstate the body. Preserve machine identifiers and report navigation. |
+
+## Illustrative meaning traps (synthetic, not client evidence)
+
+| Source | Faithful Japanese direction | Do not imply |
 |---|---|---|
-| Chưa đủ bằng chứng để quyết định đầu tư. | 投資を判断するには、現時点では根拠が不十分である。 | 投資すべきではない。 |
-| Chưa xác nhận khách hàng mục tiêu sẵn sàng trả tiền. | 対象顧客に支払意思があるかは、まだ確認できていない。 | 対象顧客に支払意思はない。 |
-| Có thể giúp giảm thời gian xử lý. | 処理時間を短縮できる可能性がある。 | 処理時間を短縮できる。 |
-| The company reports 12 paying client companies; this has not been independently verified. | 同社によると、有料顧客は12社である。独立した検証は行われていない。 | 有料顧客12社を確認済みである。 |
-| We recommend a limited pilot only if both conditions are met. | 両方の条件を満たす場合に限り、小規模な試験導入を推奨する。 | 小規模な試験導入を決定した。 |
-| Revenue might reach this level under the stated scenario. | 記載のシナリオでは、売上高がこの水準に達する可能性がある。 | 売上高はこの水準に達する見込みである。 |
+| Chưa đủ căn cứ để đầu tư. | 投資を判断するための根拠は、まだ十分ではない。 | The business has no potential, or investment is definitively rejected. |
+| X chưa xác nhận có khách hàng sẵn sàng trả tiền. | Xは、対価を支払う意向のある顧客をまだ確認できていない。 | No paying customers exist anywhere in the market. |
+| Chỉ thử sau khi đáp ứng cả hai điều kiện. | 二つの条件を両方満たした後に限り、試行する。 | Meeting either condition is sufficient, or the conditions are optional. |
+| Bằng chứng hiện có nghiêng về A nhưng chưa đủ để kết luận. | 現時点の根拠はAを支持する傾向にあるが、結論を出すには不十分である。 | A has been selected or is proven best. |
+| Chi phí tăng thêm so với cách làm hiện tại. | 現行の方法と比べて追加で生じる費用。 | The total cost, including work that already happens today. |
+| Could improve margins; not yet measured. | 利益率が改善する可能性はあるが、まだ測定していない。 | Margins have improved. |
+| Do not proceed. | 実施しない。 / 実施すべきではない。 Choose based on whether the source is a decision or advice. | Consider proceeding cautiously. |
 
-Examples illustrate distinctions, not mandatory translations. Probability words are not interchangeable merely because both sound cautious. Preserve these distinctions:
+These examples illustrate distinctions, not mandatory translations for every context.
 
-- lack of evidence / evidence of absence;
-- interview interest / willingness to pay / signed contract / collected revenue;
-- company claim / independently checked fact;
-- hypothesis / estimate / observation / decision / proposal;
-- market-level demand / demand in the target segment;
-- technical feasibility / business viability;
-- successful proof of concept / successful commercial rollout;
-- revenue / gross profit / operating profit / cash flow;
-- correlation / causation;
-- author judgment / quoted stakeholder opinion / user override.
+## Reviewer request
 
-Do not add visible Fact/Hypothesis/Decision labels if the report does not use them. Preserve distinctions through wording and attribution. Keep rating codes and scores; do not map them to an invented scale.
+Review the entire source and final Japanese directly. Identify meaning errors before style preferences. For each issue provide: section/ID; exact source passage; exact Japanese passage; severity; explanation; minimal proposed fix. Check the executive summary independently, then reconcile it with the body. Report missing or unreadable sections. A back-translation alone is insufficient.
 
-## Logical scope
+Severity:
+- Critical: changes a decision, essential condition, actor, legal scope or decision-relevant number; fabricates evidence or drops a material section.
+- Major: adds/omits substantive meaning, changes certainty or attribution, mistranslates a key term, or breaks a material citation relationship.
+- Minor: an expression or format issue without a substantive meaning change.
 
-For each important conclusion, preserve the actor, claimant, customer group, product, geography, time period, sample, baseline, negation, exception, and quantifier. Preserve whether an action is possible, recommended, planned, approved, underway, completed, or prohibited.
-
-Retain `if`, `only if`, `unless`, `until`, and AND/OR relationships. Necessary conditions are not sufficient conditions. “A only if B” must not become “B is sufficient for A.” A recommendation requiring **both** B and C must retain both. Do not turn an exception into a universal statement or a tentative result into a headline fact.
-
-Words such as `chưa`, `có thể`, `dự kiến`, `theo công ty`, `chỉ khi`, `ít nhất`, `không quá`, `必ず`, and `例外なく` are not filler when they set time, certainty, attribution, or scope. Preserve their function even when changing the wording.
-
-## Numbers and units
-
-Check quantity and surface spelling: value, sign, precision, unit, currency, interval, denominator, date, duration, and measurement period. `3%` differs from `3 percentage points`. Annual differs from monthly. `0`, `N/A`, unknown, and not measured differ.
-
-Japanese notation may change only when exactly equivalent: `100 million yen` → `1億円`. Check arithmetic, preserve precision, and do not round without a request. Do not convert currencies. Keep ambiguous units or locale-specific numbers as supplied and flag them separately.
-
-For ranges, negatives, ratios, multipliers, scores, and totals, compare each cell to its corresponding source cell. A numeral appearing somewhere in both documents is insufficient. Do not silently fix a source calculation or discrepancy.
-
-## Sources and format
-
-- Preserve URLs, citation IDs, reference keys, names, identifiers, and meaningful anchors unless a change is requested.
-- Keep each citation attached to the same claim. An unchanged bibliography does not compensate for moving support to a stronger or different assertion.
-- Translate visible prose without altering formulas, data types, HTML attributes, link targets, placeholders, or code.
-- Preserve table row/column meaning, missing-value markers, footnotes, and cross-references; recheck them after formatting.
-- Preserve quotations and who said them. Do not turn a quotation into the report author's own conclusion.
-
-## Incomplete or conflicting source
-
-Resolve ambiguities only using supplied context. If two readings would change a decision, keep the affected passage provisional and ask one focused question. Complete unaffected sections.
-
-If source and JP disagree, correct JP to match the source. If competing sources disagree and neither is authoritative, ask which governs. With JA only, preserve its claims and state that original-language fidelity was not checked.
+Do not present a client-ready result while any critical/major issue remains. When review cannot be completed, state what was not checked. Mechanical checks, a second pass by the same model and an actual independent reviewer are different evidence; label them accurately.

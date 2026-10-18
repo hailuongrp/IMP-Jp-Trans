@@ -6,16 +6,16 @@
     "skill_path": "skills/natural-japanese"
   },
   "bundle_path": "skills/hai-jp-report/vendor/natural-japanese",
-  "transformation": "SKILL.md renamed to GUIDE.md; all copied file bytes unchanged.",
+  "transformation": "Original paths and copied file bytes unchanged; repository LICENSE added.",
   "files": {
-    "GUIDE.md": {
-      "upstream_path": "skills/natural-japanese/SKILL.md",
-      "sha256": "3f51689eba0894845551fdf9d12b605bc32dc8ff54fb14c193574932f4398d6a",
-      "mode": "100644"
-    },
     "LICENSE": {
       "upstream_path": "LICENSE",
       "sha256": "fb3dd814f7b2807de2a812446c61643cf235e731bbf8cf908c0a5962d8917121",
+      "mode": "100644"
+    },
+    "SKILL.md": {
+      "upstream_path": "skills/natural-japanese/SKILL.md",
+      "sha256": "3f51689eba0894845551fdf9d12b605bc32dc8ff54fb14c193574932f4398d6a",
       "mode": "100644"
     },
     "assets/style-profile-template.md": {
