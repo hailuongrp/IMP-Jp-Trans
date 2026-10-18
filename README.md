@@ -42,6 +42,12 @@ Bộ gốc vẫn được giữ tại [`skills/natural-japanese/`](./skills/natu
 
 Nguồn và phiên bản cố định: [`UPSTREAM.lock.json`](./skills/hai-jp-report/UPSTREAM.lock.json). Không tự cập nhật bộ nền trong khi dịch. Một lần cập nhật cần được review, thay bản đóng gói và chạy lại kiểm thử; cập nhật bộ gốc không tự thay đổi bản đã pin.
 
+### Offline integrity and preserved evaluation cases
+
+`python3 dev/sync_hai_jp_vendor.py --check` verifies all copied dependency bytes, modes, paths, the per-file `vendor/natural-japanese/UPSTREAM.json` manifest and the bundle tree recorded in `UPSTREAM.lock.json`, using local pinned Git objects only. The check is read-only. Regeneration is explicit: `--sync --commit 03bc944a0c4a9f0b2a66eab065b30de5c529bf08`; it repairs the vendor bundle and updates its tree hash in the lock. Review that diff before committing. The dependency keeps its existing `SKILL.md` path; no `GUIDE.md` alias is needed.
+
+The eight [synthetic evaluation files](./evals/hai-jp-report/) are preserved byte-for-byte from PR #1 commit `84f3288f0dccbd1b3fe7c53327dc14c3fa2febaa`. Their `RESULTS.md` records that earlier candidate's observations and limits, not a replay or translation-quality approval of the current package. The offline verifier has separate regression tests under `skills/hai-jp-report/tests/`; run them with `PYTHONDONTWRITEBYTECODE=1` so generated caches do not enter the pinned trees. Skill invocation, upstream morphology helpers and human translation review remain separate checks.
+
 Giấy phép gốc: [MIT](./LICENSE). Chi tiết: [`THIRD_PARTY_NOTICES.md`](./skills/hai-jp-report/THIRD_PARTY_NOTICES.md). Tài liệu bộ gốc trước khi thêm wrapper còn trong [lịch sử repository](https://github.com/hailuongrp/IMP-Jp-Trans/blob/03bc944a0c4a9f0b2a66eab065b30de5c529bf08/README.md).
 
 Định dạng skill và cách gọi Codex tham chiếu [tài liệu OpenAI](https://developers.openai.com/codex/skills). Không đưa báo cáo khách hàng, dữ liệu riêng hoặc credential vào repo công khai này khi chưa có yêu cầu rõ ràng.

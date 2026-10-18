@@ -24,6 +24,8 @@ Use synthetic fixtures in this public repo. Never commit confidential source rep
 python3 -m unittest discover -s skills/hai-jp-report/tests -v
 ```
 
+For pinned dependency maintenance, run `PYTHONDONTWRITEBYTECODE=1 python3 dev/sync_hai_jp_vendor.py --check`. It validates the per-file manifest and existing package lock without network access or writes. Regeneration requires `--sync --commit` with the reviewed pin and updates only the vendor bundle and its lock metadata. Keep the dependency's original `SKILL.md` path. Use `PYTHONDONTWRITEBYTECODE=1` for Python checks so caches do not enter the pinned source or vendor directories.
+
 If changing upstream scripts, also run the existing upstream regression workflow `./dev/check-fixtures.sh` when dependencies are available. The original scripts use uv with inline dependency metadata. Do not silently install unavailable dependencies; report skipped checks.
 
 Distinguish unit-test results, upstream lint results, same-model comparison, independent review and human translation evaluation. Never claim tests or installation succeeded without running and verifying them.

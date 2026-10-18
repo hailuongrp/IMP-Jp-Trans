@@ -8,8 +8,11 @@
   "source_path": "skills/natural-japanese",
   "source_tree_sha": "6f3d7938e40a80a53db88e2d4ab0331de4ef3a9f",
   "bundled_path": "vendor/natural-japanese",
-  "bundled_tree_sha": "3634f68b104d0d76378997fb0e0da013b1039a05",
-  "modifications": ["Added the upstream repository LICENSE inside the bundled directory; existing dependency files are unchanged."],
+  "bundled_tree_sha": "00d782fd240c3dd66968926f6ff797c160aefa14",
+  "modifications": [
+    "Added the upstream repository LICENSE inside the bundled directory; existing dependency files are unchanged.",
+    "Added a deterministic per-file UPSTREAM.json manifest; copied dependency files remain unchanged."
+  ],
   "license": "MIT",
   "upstream_license_blob_sha": "56950aa7c7db5662b10027ba4deb34787ee24b0e",
   "update_policy": "Manual, reviewed update only. Re-run mechanical regression tests and source-to-Japanese evaluation before accepting a new pin. No runtime auto-update."
